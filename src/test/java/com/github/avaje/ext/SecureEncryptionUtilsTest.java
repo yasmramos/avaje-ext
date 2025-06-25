@@ -63,4 +63,24 @@ public class SecureEncryptionUtilsTest {
             Files.deleteIfExists(tempDecrypted);
         }
     }
+
+    @Test
+    public void testIsEncryptedFile() throws Exception {
+        // Archivo cifrado
+        Path temp = Files.createTempFile("test", ".enc");
+        Path tempPlain = Files.createTempFile("test", ".txt");
+        try {
+            Files.writeString(tempPlain, "no cifrado");
+            Files.writeString(temp, "no cifrado");
+            // No debe detectar como cifrado
+            assertFalse(SecureEncryptionUtils.isEncryptedFile(tempPlain.toString()));
+            assertFalse(SecureEncryptionUtils.isEncryptedFile(temp.toString()));
+            // Ahora ciframos
+            SecureEncryptionUtils.encryptFile(tempPlain.toString(), temp.toString(), PASSWORD);
+            assertTrue(SecureEncryptionUtils.isEncryptedFile(temp.toString()));
+        } finally {
+            Files.deleteIfExists(temp);
+            Files.deleteIfExists(tempPlain);
+        }
+    }
 }
