@@ -1,6 +1,6 @@
 # avaje-ext
 
-Extensiones y utilidades para proyectos Java.
+Extensiones y utilidades para Avaje Config.
 
 ## Requisitos
 
