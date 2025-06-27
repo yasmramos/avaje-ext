@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import com.github.avaje.ext.SecureEncryptionUtils;
+import com.github.avaje.ext.EncryptionUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
@@ -12,35 +12,35 @@ public class SecureEncryptionUtilsTest {
     @Test
     public void testEncryptAndDecrypt() throws Exception {
         String original = "textoSecreto";
-        String encrypted = SecureEncryptionUtils.encryptString(original, PASSWORD);
+        String encrypted = EncryptionUtils.encryptString(original, PASSWORD);
         assertNotNull(encrypted);
         assertNotEquals(original, encrypted);
 
-        String decrypted = SecureEncryptionUtils.decryptString(encrypted, PASSWORD);
+        String decrypted = EncryptionUtils.decryptString(encrypted, PASSWORD);
         assertEquals(original, decrypted);
     }
 
     @Test
     public void testEncryptNull() {
         assertThrows(Exception.class, () -> {
-            SecureEncryptionUtils.encryptString(null, PASSWORD);
+            EncryptionUtils.encryptString(null, PASSWORD);
         });
     }
 
     @Test
     public void testDecryptNull() {
         assertThrows(Exception.class, () -> {
-            SecureEncryptionUtils.decryptString(null, PASSWORD);
+            EncryptionUtils.decryptString(null, PASSWORD);
         });
     }
 
     @Test
     public void testDecryptWithWrongPassword() throws Exception {
         String original = "textoSecreto";
-        String encrypted = SecureEncryptionUtils.encryptString(original, PASSWORD);
+        String encrypted = EncryptionUtils.encryptString(original, PASSWORD);
         char[] wrongPassword = "otraClave".toCharArray();
         assertThrows(Exception.class, () -> {
-            SecureEncryptionUtils.decryptString(encrypted, wrongPassword);
+            EncryptionUtils.decryptString(encrypted, wrongPassword);
         });
     }
 
@@ -52,9 +52,9 @@ public class SecureEncryptionUtilsTest {
         Path tempDecrypted = Files.createTempFile("testDecrypted", ".txt");
         try {
             Files.write(tempInput, originalContent.getBytes(StandardCharsets.UTF_8));
-            SecureEncryptionUtils.encryptFile(tempInput.toString(), tempEncrypted.toString(), PASSWORD);
+            EncryptionUtils.encryptFile(tempInput.toString(), tempEncrypted.toString(), PASSWORD);
             assertTrue(Files.size(tempEncrypted) > 0);
-            SecureEncryptionUtils.decryptFile(tempEncrypted.toString(), tempDecrypted.toString(), PASSWORD);
+            EncryptionUtils.decryptFile(tempEncrypted.toString(), tempDecrypted.toString(), PASSWORD);
             String decryptedContent = Files.readString(tempDecrypted, StandardCharsets.UTF_8);
             assertEquals(originalContent, decryptedContent);
         } finally {
@@ -73,11 +73,11 @@ public class SecureEncryptionUtilsTest {
             Files.writeString(tempPlain, "no cifrado");
             Files.writeString(temp, "no cifrado");
             // No debe detectar como cifrado
-            assertFalse(SecureEncryptionUtils.isEncryptedFile(tempPlain.toString()));
-            assertFalse(SecureEncryptionUtils.isEncryptedFile(temp.toString()));
+            assertFalse(EncryptionUtils.isEncryptedFile(tempPlain.toString()));
+            assertFalse(EncryptionUtils.isEncryptedFile(temp.toString()));
             // Ahora ciframos
-            SecureEncryptionUtils.encryptFile(tempPlain.toString(), temp.toString(), PASSWORD);
-            assertTrue(SecureEncryptionUtils.isEncryptedFile(temp.toString()));
+            EncryptionUtils.encryptFile(tempPlain.toString(), temp.toString(), PASSWORD);
+            assertTrue(EncryptionUtils.isEncryptedFile(temp.toString()));
         } finally {
             Files.deleteIfExists(temp);
             Files.deleteIfExists(tempPlain);

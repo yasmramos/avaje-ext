@@ -1,7 +1,7 @@
 package io.avaje.config.encryption;
 
 import com.github.avaje.ext.CryptoOperationException;
-import com.github.avaje.ext.SecureEncryptionUtils;
+import com.github.avaje.ext.EncryptionUtils;
 import io.avaje.config.Configuration;
 
 public class SecureEncryptionExpressionEval implements Configuration.ExpressionEval {
@@ -28,7 +28,7 @@ public class SecureEncryptionExpressionEval implements Configuration.ExpressionE
         if (result != null && result.startsWith(ENC_PREFIX) && result.endsWith(ENC_SUFFIX)) {
             String encryptedValue = result.substring(ENC_PREFIX.length(), result.length() - ENC_SUFFIX.length());
             try {
-                return SecureEncryptionUtils.decryptString(encryptedValue, encryptionPassword);
+                return EncryptionUtils.decryptString(encryptedValue, encryptionPassword);
             } catch (CryptoOperationException e) {
                 throw new RuntimeException("Failed to decrypt property value: " + e.getMessage(), e);
             }

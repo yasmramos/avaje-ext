@@ -2,11 +2,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import io.avaje.config.encryption.SecureEncryptedConfigParser;
-import com.github.avaje.ext.SecureEncryptionUtils;
+import com.github.avaje.ext.EncryptionUtils;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Properties;
 
@@ -47,7 +46,7 @@ public class SecureEncryptedConfigParserTest {
             }
             // Cifrar el archivo
             Path tempEnc = Files.createTempFile("props", ".enc");
-            SecureEncryptionUtils.encryptFile(tempProps.toString(), tempEnc.toString(), PASSWORD.toCharArray());
+            EncryptionUtils.encryptFile(tempProps.toString(), tempEnc.toString(), PASSWORD.toCharArray());
             // Probar load(InputStream)
             SecureEncryptedConfigParser parser = new SecureEncryptedConfigParser();
             try (var in = Files.newInputStream(tempEnc)) {

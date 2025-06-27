@@ -1,7 +1,7 @@
 package io.avaje.config.encryption;
 
 import com.github.avaje.ext.CryptoOperationException;
-import com.github.avaje.ext.SecureEncryptionUtils;
+import com.github.avaje.ext.EncryptionUtils;
 import io.avaje.config.ConfigParser;
 import java.io.*;
 import java.nio.file.Files;
@@ -65,14 +65,14 @@ public final class SecureEncryptedConfigParser implements ConfigParser {
 
     private Map<String, String> loadFromFile(String filePath) throws IOException {
         // Verificar si el archivo está encriptado
-        if (!SecureEncryptionUtils.isEncryptedFile(filePath)) {
+        if (!EncryptionUtils.isEncryptedFile(filePath)) {
             throw new IOException("File is not encrypted with the expected format: " + filePath);
         }
         // Crear archivo temporal para el contenido desencriptado
         Path decryptedFile = Files.createTempFile("config-decrypted", ".properties");
         try {
             // Desencriptar archivo
-            SecureEncryptionUtils.decryptFile(filePath, decryptedFile.toString(), encryptionPassword);
+            EncryptionUtils.decryptFile(filePath, decryptedFile.toString(), encryptionPassword);
 
             // Cargar propiedades del archivo desencriptado
             Properties props = new Properties();

@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import io.avaje.config.encryption.SecureEncryptionExpressionEval;
 import io.avaje.config.Configuration;
-import com.github.avaje.ext.SecureEncryptionUtils;
+import com.github.avaje.ext.EncryptionUtils;
 
 public class SecureEncryptionExpressionEvalTest {
     private static final String PASSWORD = "claveSegura123";
@@ -22,7 +22,7 @@ public class SecureEncryptionExpressionEvalTest {
     @Test
     void testEvalEncrypted() throws Exception {
         String texto = "valorSecreto";
-        String encrypted = SecureEncryptionUtils.encryptString(texto, PASSWORD.toCharArray());
+        String encrypted = EncryptionUtils.encryptString(texto, PASSWORD.toCharArray());
         String expr = "ENC(" + encrypted + ")";
         SecureEncryptionExpressionEval eval = new SecureEncryptionExpressionEval(new DummyEval(expr));
         String result = eval.eval("");
