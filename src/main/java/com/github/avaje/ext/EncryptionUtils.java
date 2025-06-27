@@ -53,9 +53,9 @@ import javax.crypto.spec.SecretKeySpec;
  * <li>Soporte para metadatos y versionado</li>
  * </ul>
  */
-public class SecureEncryptionUtils {
+public class EncryptionUtils {
 
-    private static final Logger logger = Logger.getLogger(SecureEncryptionUtils.class.getName());
+    private static final Logger logger = Logger.getLogger(EncryptionUtils.class.getName());
 
     // Configuración de algoritmos
     private static final String ENCRYPTION_ALGORITHM = "AES/GCM/NoPadding";
@@ -425,6 +425,12 @@ public class SecureEncryptionUtils {
         } finally {
            // Arrays.fill(password, '\0');
         }
+        
+        
+    }
+
+    public static Set<String> getALLOWED_EXTENSIONS() {
+        return ALLOWED_EXTENSIONS;
     }
 
 }
