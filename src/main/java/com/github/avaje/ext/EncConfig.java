@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -14,7 +13,7 @@ public class EncConfig {
     /**
      * Establece una propiedad cifrada en la configuración.
      */
-    public static void setEncryptProperty(String key, String value) {
+    public static void setEncryptedProperty(String key, String value) {
         try {
             Config.setProperty(key, "ENC(" + EncryptionUtils.encryptString(value, getPassword()) + ")");
         } catch (CryptoOperationException ex) {
@@ -26,15 +25,15 @@ public class EncConfig {
      * Guarda las propiedades en un archivo cifrado y elimina el archivo
      * original.
      */
-    public static void saveEncrypted(String inputfileName, String outputfileName) {
-        saveEncrypted(inputfileName, outputfileName, true);
+    public static void saveEncryptedProperties(String inputfileName, String outputfileName) {
+        saveEncryptedProperties(inputfileName, outputfileName, true);
     }
 
     /**
      * Guarda las propiedades en un archivo cifrado. Puede eliminar el archivo
      * original si se indica.
      */
-    public static void saveEncrypted(String inputfileName, String outputfileName, boolean deleteInput) {
+    public static void saveEncryptedProperties(String inputfileName, String outputfileName, boolean deleteInput) {
         try {
             savePropertiesToFile(inputfileName);
             EncryptionUtils.encryptFile(inputfileName, outputfileName, getPassword());
@@ -50,7 +49,7 @@ public class EncConfig {
      * Guarda las propiedades en un archivo normal y elimina archivos cifrados
      * si se indica.
      */
-    public static void saveAsNormal(String inputfileName, boolean deleteEncFiles) {
+    public static void savePlainProperties(String inputfileName, boolean deleteEncFiles) {
         try {
             savePropertiesToFile(inputfileName);
             if (deleteEncFiles) {
